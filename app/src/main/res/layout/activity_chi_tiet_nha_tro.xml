@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorGray"
+    tools:context="com.example.cuongtran.timtro.view.activity.XemChiTietNhaTroActivity">
+    <android.support.v7.widget.Toolbar
+        app:title="Chi Tiết Nhà Trọ"
+        app:titleTextColor="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/appColor">
+
+    </android.support.v7.widget.Toolbar>
+    <ScrollView
+        android:fillViewport="true"
+        android:id="@+id/scrollView_ChiTiet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#c4bfbf"
+            android:orientation="vertical">
+            <ImageView
+                android:background="@color/colorGray"
+                android:id="@+id/img_AnhNhaTro_ChiTiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                />
+
+            <android.support.v7.widget.CardView
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:background="#FFFFFFFF"
+                        android:text="Thông tin chi tiết "
+                        android:textSize="20dp"
+                        android:textColor="#000000"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/imageViewNguoiDang_ChiTiet"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/default_avatar_160"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_alignParentTop="true"
+                            />
+
+                        <TextView
+                            android:textColor="#000000"
+                            android:id="@+id/textViewNguoiDang_ChiTiet"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="Người Đăng"
+                            android:textSize="20dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_toEndOf="@+id/imageViewNguoiDang_ChiTiet"
+                            />
+                        <TextView
+                            android:textColor="#000000"
+                            android:id="@+id/textViewNgayDang_ChiTiet"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="Ngày Đăng"
+                            android:textSize="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toEndOf="@+id/imageViewNguoiDang_ChiTiet"
+                            android:layout_below="@+id/textViewNguoiDang_ChiTiet" />
+
+
+                    </RelativeLayout>
+                    <TextView
+                        android:textColor="#000000"
+                        android:id="@+id/textViewDiaChi_ChiTiet"
+                        android:textSize="18dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Địa Chỉ" />
+
+                    <TextView
+                        android:textColor="#000000"
+                        android:textSize="18dp"
+                        android:id="@+id/textViewGia_ChiTiet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Giá" />
+                    <TextView
+                        android:textColor="#000000"
+                        android:textSize="18dp"
+                        android:id="@+id/textViewDienTich_ChiTiet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Diện Tích" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:textColor="#000000"
+                            android:textSize="18dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Số điện thoại: " />
+                        <TextView
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18dp"
+                            android:id="@+id/textViewSdt_ChiTiet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:textColor="#000000"
+                        android:textSize="18dp"
+                        android:id="@+id/textViewMoTa_ChiTiet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Mô tả" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="right">
+
+
+                        <Button
+                            android:background="@color/colorWhite"
+                            android:layout_marginRight="20dp"
+                            android:id="@+id/buttonLuu_ChiTiet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_save_black_24dp"
+                            android:text=" lưu" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="#ffffff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bản Đồ"
+                        android:textSize="20dp"
+                        android:textColor="#000000"/>
+                    <fragment
+                        android:id="@+id/map_ChiTiet"
+                        android:name="com.example.cuongtran.timtro.entity.WorkaroundMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        />
+
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardBackgroundColor="#ffffff"
+                app:cardCornerRadius="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorBlack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bình luận"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        >
+
+                        <EditText
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/edt_chat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_toLeftOf="@+id/btn_chat"
+                            android:background="@drawable/my_edittext" />
+
+                        <Button
+
+                            android:id="@+id/btn_chat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/mybutton"
+                            android:text="Gửi" />
+
+                    </RelativeLayout>
+                    <ListView
+                        android:id="@+id/lv_chat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp">
+
+                    </ListView>
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+

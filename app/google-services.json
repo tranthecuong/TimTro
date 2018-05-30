@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1055171657659",
+    "firebase_url": "https://timtro-af1ab.firebaseio.com",
+    "project_id": "timtro-af1ab",
+    "storage_bucket": "timtro-af1ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055171657659:android:120d833cf3263759",
+        "android_client_info": {
+          "package_name": "com.example.cuongtran.timtro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055171657659-r4fhv2dpbord0ffmnt2najcu5dcf8njq.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1055171657659-r4fhv2dpbord0ffmnt2najcu5dcf8njq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXAkHKBfdSdBDjTa90ejyhtZLvdN6PaUw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
