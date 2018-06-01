@@ -44,11 +44,40 @@ public class MainActivity extends AppCompatActivity {
     private Button btnToolBar;
     private int currentTab = 1;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("CUONG","onStartMain");
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("CUONG","onResumeMain");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("CUONG","onPauseMain");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("CUONG","onStopMain");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e("CUONG","onrestartMain");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("CUONG","onCreatMain");
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -135,19 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 200) {
-//            FilterPacket packet = data.getParcelableExtra("filter");
-//            boolean action = packet.getRefreshNeed();
-//            if(action==true){
-//                // cap nhat lai man hinh 1
-//                // manHinh1.updateFilter(packet);
-//            }
-//
-//        }
-//    }
 
 
     private void setupTabIcon() {
