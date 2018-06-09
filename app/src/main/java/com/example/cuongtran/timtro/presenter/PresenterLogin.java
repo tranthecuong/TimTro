@@ -43,6 +43,7 @@ public class PresenterLogin implements FirebaseAuthenticator.IListener {
     @Override
     public void onLoginFailed(String error) {
         iLoginView.showMessage(error);
+        iLoginView.showLoading(false);
     }
     public interface ILoginView{
         void showMessage(String msg);
