@@ -1,4 +1,4 @@
-package com.example.cuongtran.timtro.widget;
+package com.example.cuongtran.timtro.view.adapter;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

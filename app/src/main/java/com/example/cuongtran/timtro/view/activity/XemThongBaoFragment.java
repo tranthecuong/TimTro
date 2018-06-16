@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.cuongtran.timtro.R;
+import com.example.cuongtran.timtro.model.authenticate.FirebaseAuthenticator;
+import com.example.cuongtran.timtro.presenter.PresenterXemThongBaoFragment;
 import com.example.cuongtran.timtro.view.adapter.AdapterManHinh4;
 import com.example.cuongtran.timtro.entity.ThongBao;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,17 +30,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XemThongBaoFragment extends Fragment {
+public class XemThongBaoFragment extends Fragment implements PresenterXemThongBaoFragment.IView {
     ListView lv;
     RelativeLayout relativeLayout;
     Button button;
     View rootView;
     List<ThongBao> arrayList;
-    FirebaseAuth mAuth;
-    FirebaseUser mCurrentUser;
-    FirebaseFirestore firebaseFirestore;
     String idCurrentUser;
     AdapterManHinh4 adapterManHinh4;
+    FirebaseAuthenticator firebaseAuthenticator= new FirebaseAuthenticator();
+    PresenterXemThongBaoFragment presenterXemThongBaoFragment = new PresenterXemThongBaoFragment(this);
 
     @Nullable
     @Override
@@ -73,13 +74,11 @@ public class XemThongBaoFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mAuth=FirebaseAuth.getInstance();
-        mCurrentUser=mAuth.getCurrentUser();
-        if(mCurrentUser!=null){
-            idCurrentUser=mCurrentUser.getUid();
+        if(firebaseAuthenticator.checkLogon()){
+            idCurrentUser=firebaseAuthenticator.getUserId();
             // Neu co nguoi dang nhap roi thi lay cac thong bao ve cho vao listview
             relativeLayout.setVisibility(View.GONE);
-            getData();
+            presenterXemThongBaoFragment.getData(idCurrentUser);
         }
         else {
             // Chưa co nguoi dang nhap, hien thi layout yeu cau dang nhap
@@ -88,35 +87,6 @@ public class XemThongBaoFragment extends Fragment {
 
     }
 
-    private void getData() {
-        firebaseFirestore= FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("thongbao")
-                .whereEqualTo("idUser", idCurrentUser)
-                //
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.e("CUONG", "Listen failed.", e);
-                            return;
-                        }
-
-                        //List<ThongBao> listThongBao = new ArrayList<>();
-                        arrayList.clear();
-                        for (QueryDocumentSnapshot doc : value) {
-                           ThongBao t = doc.toObject(ThongBao.class);
-                           arrayList.add(t);
-                        }
-                        adapterManHinh4.notifyDataSetChanged();
-
-                        //Log.e("CUONG", "List Thong bao " + arrayList.get(0).getIdNhaTro());
-                    }
-                });
-
-
-
-    }
 
     private void anhxa() {
         lv=(ListView)rootView.findViewById(R.id.lv_thongbao);
@@ -125,5 +95,12 @@ public class XemThongBaoFragment extends Fragment {
         arrayList = new ArrayList<>();
         adapterManHinh4= new AdapterManHinh4(getContext(),R.layout.item_tab4,arrayList);
         lv.setAdapter(adapterManHinh4);
+    }
+
+    @Override
+    public void setData(List<ThongBao> arrayList) {
+        this.arrayList.clear();
+        this.arrayList.addAll(arrayList);
+        adapterManHinh4.notifyDataSetChanged();
     }
 }

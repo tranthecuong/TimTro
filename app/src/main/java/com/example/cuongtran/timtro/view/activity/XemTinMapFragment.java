@@ -95,46 +95,13 @@ public class XemTinMapFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         mContext = getContext();
-        Log.e("CUONG","onCreatM2");
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.e("CUONG","onStartM2");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("CUONG","onResumeM2");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("CUONG","onPauseM2");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("CUONG","onStopM2");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e("CUONG","onDestroyViewM2");
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e("CUONG","onCreatViewM2");
         rootView = inflater.inflate(R.layout.manhinh2, container, false);
         allow = 0;
         anhxa();

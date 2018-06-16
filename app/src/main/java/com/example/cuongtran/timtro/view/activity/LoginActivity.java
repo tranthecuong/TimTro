@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements PresenterLogin.I
             progressDialog = new ProgressDialog(mContext);
             progressDialog.setMessage("Loging in.......");
             progressDialog.setTitle("Please wait.");
+            progressDialog.setCancelable(false);
             progressDialog.show();
         }else{
             if(progressDialog!=null && progressDialog.isShowing()){

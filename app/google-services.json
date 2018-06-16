@@ -1,31 +1,27 @@
 {
   "project_info": {
-    "project_number": "1055171657659",
-    "firebase_url": "https://timtro-af1ab.firebaseio.com",
-    "project_id": "timtro-af1ab",
-    "storage_bucket": "timtro-af1ab.appspot.com"
+    "project_number": "658613417216",
+    "firebase_url": "https://timtrodatn.firebaseio.com",
+    "project_id": "timtrodatn",
+    "storage_bucket": "timtrodatn.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1055171657659:android:120d833cf3263759",
+        "mobilesdk_app_id": "1:658613417216:android:120d833cf3263759",
         "android_client_info": {
           "package_name": "com.example.cuongtran.timtro"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1055171657659-r4fhv2dpbord0ffmnt2najcu5dcf8njq.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "1055171657659-r4fhv2dpbord0ffmnt2najcu5dcf8njq.apps.googleusercontent.com",
+          "client_id": "658613417216-njkd046bjskhpgehaf0usj7ivi428kae.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAXAkHKBfdSdBDjTa90ejyhtZLvdN6PaUw"
+          "current_key": "AIzaSyD_2PdAb4E0vIPTwZ26CRb4wtcSetGmarY"
         }
       ],
       "services": {

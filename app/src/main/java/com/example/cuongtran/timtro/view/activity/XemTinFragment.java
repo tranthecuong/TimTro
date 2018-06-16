@@ -25,7 +25,7 @@ import com.example.cuongtran.timtro.view.adapter.TinDangViewHolder;
 import com.example.cuongtran.timtro.entity.CheckConnection;
 import com.example.cuongtran.timtro.entity.Constant;
 import com.example.cuongtran.timtro.entity.TinDang;
-import com.example.cuongtran.timtro.widget.EndlessScrollListener;
+import com.example.cuongtran.timtro.view.adapter.EndlessScrollListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -152,6 +152,7 @@ public class XemTinFragment extends Fragment {
 
         });
         rvNhaTro.setAdapter(tinDangAdapter);
+        // load more RV
         onScroll = new EndlessScrollListener((LinearLayoutManager) rvNhaTro.getLayoutManager()) {
             @Override
             public void onLoadMore() {

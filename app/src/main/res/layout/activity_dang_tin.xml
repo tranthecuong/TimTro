@@ -172,6 +172,7 @@
                             android:text="Giá"
                             android:textSize="20dp"/>
                         <EditText
+                            android:hint="triệu"
                             android:digits="0123456789."
                             android:inputType="numberDecimal"
                             android:textCursorDrawable="@null"
@@ -194,6 +195,7 @@
                             android:text="Diện tích"
                             android:textSize="20dp"/>
                         <EditText
+                            android:hint="mét vuông"
                             android:digits="0123456789."
                             android:inputType="numberDecimal"
                             android:textCursorDrawable="@null"

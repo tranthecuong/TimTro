@@ -1,7 +1,6 @@
 package com.example.cuongtran.timtro.view.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,30 +29,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.cuongtran.timtro.R;
-import com.example.cuongtran.timtro.entity.CheckConnection;
 import com.example.cuongtran.timtro.entity.WorkaroundMapFragment;
+import com.example.cuongtran.timtro.presenter.PresenterDangTin;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.example.cuongtran.timtro.view.activity.ProfileActivity.CODE_CAMERA_REQUEST;
 import static com.example.cuongtran.timtro.view.activity.ProfileActivity.CODE_GALLERY_REQUEST;
@@ -61,7 +45,8 @@ import static com.example.cuongtran.timtro.view.activity.ProfileActivity.MY_PERM
 import static com.example.cuongtran.timtro.view.activity.ProfileActivity.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 
 public class DangTinActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener{
+        GoogleMap.OnMyLocationButtonClickListener,PresenterDangTin.IView{
+    PresenterDangTin presenterDangTin= new PresenterDangTin(this);
 
     Uri imgAvatarUri =null;
     ProgressDialog progressDialog;
@@ -72,51 +57,21 @@ public class DangTinActivity extends AppCompatActivity implements OnMapReadyCall
     Button buttonDangTin;
     String[] dataSpinner1, dataSpinner2, dataSpinner22;
     Context mContext = this;
-    Activity mActivity = this;
     Bitmap resizedBitmap = null;
-    String idTaiKhoan, ngayDang, idQuanHuyen, idThanhPho, chiTietDiaChi, dienThoai, moTa;
+    String idQuanHuyen, idThanhPho, chiTietDiaChi, dienThoai, moTa;
     String gia,dienTich;
     GoogleMap mMap;
     SupportMapFragment fragment;
     LatLng mLatLng=null;
     ScrollView mScrollView;
-    FirebaseUser mCurrentUser;
-    FirebaseFirestore db;
-    FirebaseStorage mStorage;
-    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dang_tin);
-        db=FirebaseFirestore.getInstance();
-        mStorage=FirebaseStorage.getInstance();
-        storageReference=mStorage.getReference();
-        mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
-
-
-
         // an key board
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         anhxa();
-
-
-        //them vào DB
-
-//        int i;
-//        for(i=0;i<dataSpinner22.length;i++){
-//            Map<String, String> params = new HashMap<String, String>();
-//            int j=i+1;
-//            params.put("idquanhuyen",String.valueOf(j));
-//            params.put("idtinh","2");
-//            params.put("ten",dataSpinner22[i]);
-//            db.collection("quanhuyen").add(params);
-//
-//        }
-
-        //them vao DB
-
-
         //set su kien cho nut lay anh
         imageViewNhaTro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,49 +105,15 @@ public class DangTinActivity extends AppCompatActivity implements OnMapReadyCall
         buttonDangTin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(CheckConnection.haveNetworkConnection(mContext)){
-
-
-                    //kiem tra data
-                    idQuanHuyen = spinnerQuan.getSelectedItem().toString();
-                    idThanhPho = spinnerTinh.getSelectedItem().toString();
-                    chiTietDiaChi = editTextChiTietDiaChi.getText().toString();
-                    gia = editTextGia.getText().toString();
-                    dienTich = editTextDienTich.getText().toString();
-                    dienThoai = editTextDienThoai.getText().toString();
-                    moTa = editTextMoTa.getText().toString();
-                    //SharedPreferences setting = getSharedPreferences("TRANTHECUONG", MODE_PRIVATE);
-                    //idTaiKhoan = setting.getString("ID", "");
-                    //lay ve ngay dang
-//                    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//                    Calendar cal = Calendar.getInstance();
-//                    ngayDang = dateFormat.format(cal.getTime());
-                    if (resizedBitmap == null) {
-                        Toast.makeText(mContext, "Chưa chọn ảnh !", Toast.LENGTH_SHORT).show();
-                    } else
-                    if(mLatLng==null){
-                        Toast.makeText(mContext, "Hãy chọn địa chỉ của bạn trên bản đồ", Toast.LENGTH_SHORT).show();
-
-                    }
-                    else
-
-                    {
-                        if (chiTietDiaChi.equals("") || gia.equals("") || dienTich.equals("") || dienThoai.equals("")
-                                || moTa.equals("")) {
-                            Toast.makeText(mContext, "Nhập đầy đủ các trường", Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            dangTin();
-                        }
-
-
-                    }
-
-
-                }else Toast.makeText(mContext, "Kiểm tra lại kết nối internet", Toast.LENGTH_SHORT).show();
-
-
-
+                //kiem tra data
+                idQuanHuyen = spinnerQuan.getSelectedItem().toString();
+                idThanhPho = spinnerTinh.getSelectedItem().toString();
+                chiTietDiaChi = editTextChiTietDiaChi.getText().toString();
+                gia = editTextGia.getText().toString();
+                dienTich = editTextDienTich.getText().toString();
+                dienThoai = editTextDienThoai.getText().toString();
+                moTa = editTextMoTa.getText().toString();
+                presenterDangTin.dangTin(mContext,idQuanHuyen,idThanhPho,chiTietDiaChi,gia,dienTich,dienThoai,moTa,resizedBitmap,mLatLng);
             }
 
         });
@@ -222,74 +143,6 @@ public class DangTinActivity extends AppCompatActivity implements OnMapReadyCall
 
             }
         });
-    }
-
-    private void dangTin() {
-        buttonDangTin.setEnabled(false);
-        buttonDangTin.setVisibility(View.GONE);
-        // FIRE BASE HERE
-        progressDialog= new ProgressDialog(mContext);
-        progressDialog.setMessage("Đang đăng tin......");
-        progressDialog.setTitle("Đăng tin");
-        progressDialog.show();
-
-        //Dua anh vao Storage
-        Calendar calendar= Calendar.getInstance();
-        StorageReference img_ref= storageReference.child("anhnhatro").child("nhatro"+ calendar.getTimeInMillis()+".PNG");
-        ByteArrayOutputStream baos= new ByteArrayOutputStream();
-        resizedBitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
-        byte data2[]=baos.toByteArray();
-        UploadTask uploadTask= img_ref.putBytes(data2);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String url=taskSnapshot.getDownloadUrl().toString();
-                idTaiKhoan= mCurrentUser.getUid();
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("tenthanhpho", idThanhPho);
-                params.put("tenquanhuyen", idQuanHuyen);
-                params.put("chitietdiachi", chiTietDiaChi);
-                params.put("gia", Long.parseLong(gia));
-                params.put("dientich", Long.parseLong(dienTich));
-                params.put("dienthoai", dienThoai);
-                params.put("mota", moTa);
-                params.put("idtaikhoan", idTaiKhoan);
-                params.put("ngaydang", FieldValue.serverTimestamp());
-                params.put("anh",url);
-                String kinhdo=String.valueOf(mLatLng.longitude);
-                String vido = String.valueOf(mLatLng.latitude);
-                params.put("kinhdo",kinhdo);
-                params.put("vido",vido);
-                db.collection("nhatro").add(params).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(mContext, "Đăng tin thành công !", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                        finish();
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(mContext, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }
-                });
-
-            }
-        });
-
-
-
-
-
     }
 
     private void chooseFromStorage() {
@@ -630,5 +483,32 @@ public class DangTinActivity extends AppCompatActivity implements OnMapReadyCall
                     }
                 });
 
+    }
+
+    @Override
+    public void showMess(String mess) {
+        Toast.makeText(mContext, mess, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLoading(Boolean vis) {
+        if(vis==true){
+            buttonDangTin.setEnabled(false);
+            buttonDangTin.setVisibility(View.GONE);
+            progressDialog= new ProgressDialog(mContext);
+            progressDialog.setMessage("Đang đăng tin......");
+            progressDialog.setTitle("Đăng tin");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+        }else {
+            progressDialog.dismiss();
+        }
+
+    }
+
+    @Override
+    public void done() {
+        finish();
     }
 }

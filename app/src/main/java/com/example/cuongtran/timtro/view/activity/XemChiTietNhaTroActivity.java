@@ -292,7 +292,7 @@ public class XemChiTietNhaTroActivity extends AppCompatActivity implements OnMap
 
         String url = tinDang.getAnh();
         Picasso.get().load(url)
-                //.placeholder(R.drawable.ic_photo_camera_black_24dp)
+               // .placeholder(R.drawable.ic_photo_camera_black_24dp)
                 .error(R.drawable.ic_error_outline_black_24dp)
                 .into(img);
 

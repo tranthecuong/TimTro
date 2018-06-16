@@ -16,6 +16,8 @@ import com.example.cuongtran.timtro.R;
 import com.example.cuongtran.timtro.entity.FilterMap;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class LocMapActivity extends AppCompatActivity {
     TextView txtvGia, txtvDienTich;
@@ -40,7 +42,8 @@ public class LocMapActivity extends AppCompatActivity {
         Seekbargia.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
-                DecimalFormat df = new DecimalFormat("#.0");
+                DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.US);
+                DecimalFormat df = new DecimalFormat("#.0",symbols);
                 a = Float.valueOf(df.format(minValue));
                 b = Float.valueOf(df.format(maxValue));
                 if((a==0.0)&&(b==15.0)){

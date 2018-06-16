@@ -18,6 +18,7 @@ import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarFinalValueListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.example.cuongtran.timtro.R;
+import com.example.cuongtran.timtro.presenter.PresenterLocTin;
 import com.example.cuongtran.timtro.view.adapter.AdapterTabHost;
 import com.example.cuongtran.timtro.entity.Constant;
 import com.example.cuongtran.timtro.entity.TinDang;
@@ -29,9 +30,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class LocTinActivity extends AppCompatActivity {
+public class LocTinActivity extends AppCompatActivity implements PresenterLocTin.IView {
     CrystalRangeSeekbar Seekbargia,Seekbardientich;
     Spinner spinner1,spinner2;
     String[] dataSpinner1, dataSpinner2, dataSpinner22;
@@ -43,14 +46,13 @@ public class LocTinActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<TinDang> arrayList= new ArrayList<>();
     AdapterTabHost adapterTabHost;
-    FirebaseFirestore db;
+    PresenterLocTin presenterLocTin = new PresenterLocTin(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loc_tin);
         mContext=this;
-        db=FirebaseFirestore.getInstance();
         listView=(ListView)findViewById(R.id.lv_loctin);
         adapterTabHost= new AdapterTabHost(this,R.layout.itemtabhost,arrayList);
         listView.setAdapter(adapterTabHost);
@@ -115,7 +117,8 @@ public class LocTinActivity extends AppCompatActivity {
         Seekbargia.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
-                DecimalFormat df = new DecimalFormat("#.0");
+                DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.US);
+                DecimalFormat df = new DecimalFormat("#.0",symbols);
                  a = Float.valueOf(df.format(minValue));
                  b = Float.valueOf(df.format(maxValue));
                 if((a==0.0)&&(b==15.0)){
@@ -158,7 +161,7 @@ public class LocTinActivity extends AppCompatActivity {
                 String huyen =spinner2.getSelectedItem().toString();
                 long t1= (long) (a*1000000);
                 long t2= (long) (b*1000000);
-                updateFilter(tinh,huyen,t1,t2,a2,b2);
+                presenterLocTin.updateFilter(tinh,huyen,t1,t2,a2,b2);
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -172,138 +175,10 @@ public class LocTinActivity extends AppCompatActivity {
 
     }
 
-    public void updateFilter(final String tinh, final String huyen, long mingia, long maxgia, final long minS, final long maxS){
-
-        Query query = null;
-        if(tinh.equals("Tất cả")&&huyen.equals("Tất cả")){
-            // truy van gia dien tich
-            query= db.collection(Constant.NHA_TRO)
-                    .whereGreaterThanOrEqualTo("gia",mingia)
-                    .whereLessThanOrEqualTo("gia",maxgia);
-
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()){
-                        arrayList.clear();
-                        TinDang tinDang = null;
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            tinDang = doc.toObject(TinDang.class).withId(doc.getId());
-                            long s=tinDang.getDientich();
-                            if((s>=minS)&&(s<=maxS)){
-                                arrayList.add(tinDang);
-                            }
-
-                        }
-                        adapterTabHost.notifyDataSetChanged();
-
-                    }
-                    else {
-                        Log.e("CUONG", "Error getting documents: ", task.getException());
-
-                    }
-                }
-            });
-
-        }
-        else {
-            // truy van gia, dien tich, huyen
-            if(tinh.equals("Tất cả")){
-                query= db.collection(Constant.NHA_TRO)
-                        .whereEqualTo("tenquanhuyen",huyen)
-                        .whereGreaterThanOrEqualTo("gia",mingia)
-                        .whereLessThanOrEqualTo("gia",maxgia);
-
-                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            arrayList.clear();
-                            TinDang tinDang = null;
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                tinDang = doc.toObject(TinDang.class).withId(doc.getId());
-                                long s=tinDang.getDientich();
-                                if((s>=minS)&&(s<=maxS)){
-                                    arrayList.add(tinDang);
-                                }
-                            }
-                            adapterTabHost.notifyDataSetChanged();
-
-                        }
-                        else {
-                            Log.e("CUONG", "Error getting documents: ", task.getException());
-
-                        }
-                    }
-                });
-            }
-            if(huyen.equals("Tất cả")){
-                // truy van gia, dien tich, tinh
-                query= db.collection(Constant.NHA_TRO)
-                        .whereEqualTo("tenthanhpho",tinh)
-                        .whereGreaterThanOrEqualTo("gia",mingia)
-                        .whereLessThanOrEqualTo("gia",maxgia);
-
-
-                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            arrayList.clear();
-                            TinDang tinDang = null;
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                tinDang = doc.toObject(TinDang.class).withId(doc.getId());
-                                long s=tinDang.getDientich();
-                                if((s>=minS)&&(s<=maxS)){
-                                    arrayList.add(tinDang);
-                                }
-                            }
-                            adapterTabHost.notifyDataSetChanged();
-
-                        }
-                        else {
-                            Log.e("CUONG", "Error getting documents: ", task.getException());
-
-                        }
-                    }
-                });
-
-            }
-
-            if(!huyen.equals("Tất cả")&&!tinh.equals("Tất cả")){
-                // truy van gia, dien tich
-                query= db.collection(Constant.NHA_TRO)
-                        .whereEqualTo("tenquanhuyen",huyen)
-                        .whereGreaterThanOrEqualTo("gia",mingia)
-                        .whereLessThanOrEqualTo("gia",maxgia);
-
-                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            arrayList.clear();
-                            TinDang tinDang = null;
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                tinDang = doc.toObject(TinDang.class).withId(doc.getId());
-                                long s=tinDang.getDientich();
-                                String h=tinDang.gettenthanhpho();
-                                if((s>=minS)&&(s<=maxS)&&(h.equals(tinh))){
-                                    arrayList.add(tinDang);
-                                }
-                            }
-                            adapterTabHost.notifyDataSetChanged();
-
-                        }
-                        else {
-                            Log.e("CUONG", "Error getting documents: ", task.getException());
-
-                        }
-                    }
-                });
-
-            }
-
-        }
+    @Override
+    public void truyVanSuccess(ArrayList<TinDang> arrayList) {
+        this.arrayList.clear();
+        this.arrayList.addAll(arrayList);
+        adapterTabHost.notifyDataSetChanged();
     }
-
 }

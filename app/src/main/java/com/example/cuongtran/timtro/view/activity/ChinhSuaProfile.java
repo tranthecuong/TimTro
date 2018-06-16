@@ -10,24 +10,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cuongtran.timtro.R;
+import com.example.cuongtran.timtro.presenter.PresenterChinhSuaProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ChinhSuaProfile extends AppCompatActivity {
+public class ChinhSuaProfile extends AppCompatActivity implements PresenterChinhSuaProfile.IView {
     ProgressDialog progressDialog;
-
     EditText editTen,editSdt,editDiachi;
     Button button;
     String id,ten,sdt,diachi;
     Context mContext;
-    FirebaseFirestore firebaseFirestore;
+    PresenterChinhSuaProfile presenterChinhSuaProfile= new PresenterChinhSuaProfile(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chinh_sua_profile);
         mContext=this;
-        firebaseFirestore=FirebaseFirestore.getInstance();
         editTen=(EditText)findViewById(R.id.edit_ten_SuaProfile);
         editSdt=(EditText)findViewById(R.id.edit_sdt_SuaProfile);
         editDiachi=(EditText)findViewById(R.id.edit_diaChi_SuaProfile);
@@ -54,50 +53,29 @@ public class ChinhSuaProfile extends AppCompatActivity {
                 ten=editTen.getText().toString().trim();
                 sdt=editSdt.getText().toString().trim();
                 diachi=editDiachi.getText().toString().trim();
-                if(ten.isEmpty()||sdt.isEmpty()||diachi.isEmpty()){
-                    Toast.makeText(mContext, "Các trường không được để trống ! ", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    suaProfile();
-                }
+                presenterChinhSuaProfile.suaProfile(id,ten,sdt,diachi);
 
             }
         });
     }
 
-    private void suaProfile() {
-        progressDialog= new ProgressDialog(mContext);
-        progressDialog.setTitle("Cập nhật");
-        progressDialog.setMessage("Xin chờ");
-        progressDialog.show();
-        firebaseFirestore.collection("taikhoan").document(id)
-                .update("hoten",ten).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
-                firebaseFirestore.collection("taikhoan").document(id)
-                        .update("sodienthoai",sdt).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        firebaseFirestore.collection("taikhoan").document(id)
-                                .update("diachi",diachi).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                progressDialog.dismiss();
-                                Toast.makeText(mContext, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                                finish();
-
-                            }
-                        });
 
 
-                    }
-                });
+    @Override
+    public void showMess(String mess) {
+        Toast.makeText(mContext, mess, Toast.LENGTH_SHORT).show();
+    }
 
-            }
-        });
-
-
-
+    @Override
+    public void showProgress(boolean vis) {
+        if(vis==true){
+            progressDialog= new ProgressDialog(mContext);
+            progressDialog.setTitle("Cập nhật");
+            progressDialog.setMessage("Xin chờ");
+            progressDialog.show();
+        }else {
+            progressDialog.dismiss();
+            finish();
+        }
     }
 }

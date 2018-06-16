@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cuongtran.timtro.R;
+import com.example.cuongtran.timtro.model.authenticate.FirebaseAuthenticator;
+import com.example.cuongtran.timtro.presenter.PresenterManageProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,18 +25,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
-public class ManageProfileFragment extends Fragment {
+public class ManageProfileFragment extends Fragment implements PresenterManageProfileFragment.IView {
     View rootView;
     TextView txtvTenTK ;
     ImageView imgAvatar;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mCurrentUser;
-    private FirebaseFirestore db;
-    CollectionReference collectionReference;
+    FirebaseAuthenticator firebaseAuthenticator= new FirebaseAuthenticator();
+    PresenterManageProfileFragment presenterManageProfileFragment= new PresenterManageProfileFragment(this);
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
-        db=FirebaseFirestore.getInstance();
         Log.e("CUONG","onCreat 5");
         super.onCreate(savedInstanceState);
     }
@@ -48,19 +46,10 @@ public class ManageProfileFragment extends Fragment {
         Log.e("CUONG","onCreatView 5");
 
         anhXa();
-        // lam anh thanh hinh tron
-        //imgAvatar.setImageResource(R.drawable.default_avatar_160);
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.default_avatar_160);
-//        RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(),bitmap);
-//        roundedBitmapDrawable.setCircular(true);
-//        imgAvatar.setImageDrawable(roundedBitmapDrawable);
-
-
-        mCurrentUser= mAuth.getCurrentUser();
         txtvTenTK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mCurrentUser!=null){
+                if(firebaseAuthenticator.checkLogon()){
                     // da co nguoi dang nhap
                     Intent intent= new Intent(getActivity(),ProfileActivity.class);
                     startActivity(intent);
@@ -102,53 +91,30 @@ public class ManageProfileFragment extends Fragment {
     public void onStart() {
         Log.e("CUONG","onStart 5");
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        mCurrentUser = mAuth.getCurrentUser();
-        if(mCurrentUser!=null){
+        if(firebaseAuthenticator.checkLogon()){
             // neu da co nguoi dang nhap
-            collectionReference=db.collection("taikhoan");
-            String id =mCurrentUser.getUid();
-
-            collectionReference.whereEqualTo("idtaikhoan", id)
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            txtvTenTK.setText(document.getString("hoten"));
-                            String link =document.getString("linkavatar");
-                            if(!link.equals("nonono")){
-                                Picasso.get().load(link)
-                                        .into(imgAvatar);
-
-                            }
-                            else {
-                                imgAvatar.setImageResource(R.drawable.default_avatar_160);
-
-                            }
-                        }
-                    }
-
-                }
-            });
-
-
-
-            //txtvTenTK.setText("TÊN TK");
-
+            String id =firebaseAuthenticator.getUserId();
+            presenterManageProfileFragment.getData(id);
 
         }else {
             // chua co nguoi dang nhap
             txtvTenTK.setText("Đăng Nhập");
             imgAvatar.setImageResource(R.drawable.default_avatar_160);
-
-
         }
-        //updateUI(currentUser);
+
     }
 
-    private void updateUI(FirebaseUser currentUser) {
+    @Override
+    public void setData(String name, String link) {
+        txtvTenTK.setText(name);
+        if(!link.equals("nonono")){
+            Picasso.get().load(link)
+                    .into(imgAvatar);
 
+        }
+        else {
+            imgAvatar.setImageResource(R.drawable.default_avatar_160);
 
+        }
     }
 }

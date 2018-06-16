@@ -209,6 +209,7 @@ public class SuaTin extends AppCompatActivity implements OnMapReadyCallback{
     private  void getDL(){
         progressDialog= new ProgressDialog(mContext);
         progressDialog.setMessage("Loading.....");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         // FireBase Here
@@ -265,6 +266,7 @@ public class SuaTin extends AppCompatActivity implements OnMapReadyCallback{
         buttonSave.setVisibility(View.GONE);
         progressDialog= new ProgressDialog(mContext);
         progressDialog.setMessage("Loading.....");
+        progressDialog.setCancelable(false);
         progressDialog.show();
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("tenthanhpho", idThanhPho);

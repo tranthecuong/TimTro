@@ -1,6 +1,7 @@
 package com.example.cuongtran.timtro.view.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,18 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.cuongtran.timtro.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,46 +57,16 @@ public class MainActivity extends AppCompatActivity {
     private Button btnToolBar;
     private int currentTab = 1;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e("CUONG","onStartMain");
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("CUONG","onResumeMain");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("CUONG","onPauseMain");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e("CUONG","onStopMain");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.e("CUONG","onrestartMain");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("CUONG","onCreatMain");
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         btnToolBar = (Button) findViewById(R.id.btn_toolbar);
-
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -164,6 +147,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 200) {
+//            FilterPacket packet = data.getParcelableExtra("filter");
+//            boolean action = packet.getRefreshNeed();
+//            if(action==true){
+//                // cap nhat lai man hinh 1
+//                // manHinh1.updateFilter(packet);
+//            }
+//
+//        }
+//    }
 
 
     private void setupTabIcon() {
